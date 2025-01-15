@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "lib": ["ES2015"],
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "types": ["jest"],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    // "experimentalDecorators": true,
+    // "emitDecoratorMetadata": true,
+
+  },
+  "exclude": ["node_modules", "test", "dist"],
+  "include": ["src/**/*"]
+}
