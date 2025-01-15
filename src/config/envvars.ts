@@ -2,6 +2,15 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+const POSTGRES_USER = process.env.POSTGRES_USER;
+const POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD;
+const POSTGRES_DB = process.env.POSTGRES_DB;
+const DATALAYER_NAME = process.env.DATALAYER_NAME;
+const POSTGRES_PORT = process.env.POSTGRES_PORT;
+
+const DATABASE_URL = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATALAYER_NAME}:${POSTGRES_PORT}/${POSTGRES_DB}`;
+process.env.DATABASE_URL = DATABASE_URL;
+
 const port = parseInt(process.env.PORT ?? '8003');
 if (isNaN(port)) {
   throw new Error('Invalid PORT enviroment variable, stopping the system');
@@ -18,7 +27,8 @@ const cors_samesite = mode === 'production' ? 'none' : 'lax';
 const backend =
   mode === 'production' ? process.env.DB_URI_PROD : process.env.DB_URI_DEV;
 
-const dataseeddev = process.env.SEED_DEVELOPER;
+const databaseUrl = process.env.DATABASE_URL;
+const dataseeddev = process.env.SEED_DEVELOPMENT;
 const dataseedprod = process.env.SEED_PRODUCTION;
 
 export {
@@ -32,4 +42,5 @@ export {
   cors_samesite,
   dataseeddev,
   dataseedprod,
+  databaseUrl,
 };
