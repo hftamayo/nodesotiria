@@ -1,34 +1,61 @@
-import express, { Request, Response, NextFunction } from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-import { dbConnection, setCorsEnviro } from './enviro.js';
-import { ServerProps } from '../../../shared/types/server.type.js';
-//import { port, mode } from './envvars.js';
+import prisma from '../api/v1/prismaClient';
+import { backend, whitelist_frontend, mode } from './envvars';
 
-const dbLayerMicroService: express.Application = express();
-//const PORT = port;
-
-async function startBackend(): Promise<ServerProps> {
+const dbConnection = async () => {
   try {
-    const db = await dbConnection();
-    dbLayerMicroService.use(cors(setCorsEnviro));
-    dbLayerMicroService.use(express.json());
-    dbLayerMicroService.use(express.urlencoded({ extended: true }));
-    dbLayerMicroService.use(cookieParser());
+    if (!backend) throw new Error('Backend URL not found');
 
-    //method for monitoring and logging
-    dbLayerMicroService.use(
-      (req: Request, res: Response, next: NextFunction) => {
-        console.log(`Request received: [${req.method}] ${req.path}`);
-        console.log(`Request headers: ${JSON.stringify(req.headers)}`);
-        next();
-      },
+    await prisma.$connect();
+    console.log('Database connection successful');
+    const db = prisma.connection.$connect();
+    db.on(
+      'error',
+      console.error.bind(console, 'connection error with data layer:'),
     );
-    return { server: dbLayerMicroService, db };
-  } catch (error: unknown) {
-    console.error('Failed to start backend', error);
+    db.once('open', function () {
+      console.log(`Connected to the Remote Dataset in ${mode} environment`);
+    });
+  } catch (error) {
+    console.log('Database connection error: ' + (error as Error).message);
     process.exit(1);
   }
-}
+};
 
-export { dbLayerMicroService, startBackend };
+const setCorsEnviro = {
+  origin: (
+    origin: string | undefined,
+    callback: (error: Error | null, allow?: boolean) => void,
+  ) => {
+    console.log(`CORS requested from origin: ${origin}`);
+    if (whitelist_frontend.indexOf(origin || '') !== -1 || !origin) {
+      console.log(`CORS requested from origin: ${origin} granted`);
+      callback(null, true);
+    } else {
+      callback(
+        new Error(`CORS requested from origin: ${origin} denied`),
+        false,
+      );
+    }
+  },
+  //credentials: true,
+  optionsSuccessStatus: 200,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: [
+    'Content-Type',
+    'Access-Control-Allow-Headers',
+    'Access-Control-Allow-Origin',
+    'Access-Control-Allow-Methods',
+    'Access-Control-Allow-Credentials',
+    'Origin',
+    'withCredentials',
+    'X-Requested-With',
+    'Content-Type',
+    'Accept',
+    'Authorization',
+    'X-HTTP-Method-Override',
+    'Set-Cookie',
+    'Cookie',
+    'Request',
+  ],
+};
+export { dbConnection, setCorsEnviro };
