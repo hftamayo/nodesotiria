@@ -1,22 +1,36 @@
-type AsyncFunction = (...args: unknown[]) => Promise<void>;
-
-export function LogExecution(
-  target: Record<string, unknown>,
+type MethodDecoratorType = (
+  target: object,
   propertyKey: string,
-  descriptor?: TypedPropertyDescriptor<AsyncFunction>,
-): TypedPropertyDescriptor<AsyncFunction> | void {
-  if (!descriptor || typeof descriptor.value !== 'function') {
-    throw new Error('Only methods can be decorated with @LogExecution');
-  }
+  descriptor: PropertyDescriptor,
+) => PropertyDescriptor;
 
-  const originalMethod = descriptor.value;
+export function LogExecution(): MethodDecoratorType {
+  return function (
+    target: object,
+    propertyKey: string,
+    descriptor: PropertyDescriptor,
+  ): PropertyDescriptor {
+    const originalMethod = descriptor.value as (
+      ...args: unknown[]
+    ) => Promise<unknown>;
 
-  descriptor.value = async function (...args: unknown[]): Promise<void> {
-    console.log(`Executing ${propertyKey}...`);
-    const result = await originalMethod.apply(this, args);
-    console.log(`${propertyKey} executed successfully.`);
-    return result;
+    const newDescriptor: PropertyDescriptor = {
+      configurable: true,
+      enumerable: descriptor.enumerable,
+      writable: true,
+      value: async function (...args: unknown[]) {
+        try {
+          console.log(`Starting execution of ${propertyKey}`);
+          const result = await originalMethod.apply(this, args);
+          console.log(`Successfully completed ${propertyKey}`);
+          return result;
+        } catch (error) {
+          console.error(`Error in ${propertyKey}:`, error);
+          throw error;
+        }
+      },
+    };
+
+    return newDescriptor;
   };
-
-  return descriptor;
 }
