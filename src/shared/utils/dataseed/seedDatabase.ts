@@ -1,11 +1,11 @@
 import { mode, dataseeddev, dataseedprod } from '../../../config/envvars';
-import { SeedRolesCommand } from '../../../services/commands/seedRolesCommand';
-import { SeedUsersCommand } from '../../../services/commands/seedUsersCommand';
+import { SeedRolesCommand } from '../../../services/commands/dataseeding/seedRolesCommand';
+import { SeedUsersCommand } from '../../../services/commands/dataseeding/seedUsersCommand';
 import { LogExecution } from '../../../decorators/logging';
 
 class SeedDatabase {
-  private seedUsersCommand = new SeedUsersCommand();
-  private seedRolesCommand = new SeedRolesCommand();
+  private readonly seedUsersCommand = new SeedUsersCommand();
+  private readonly seedRolesCommand = new SeedRolesCommand();
 
   @LogExecution()
   async seed(): Promise<void> {
