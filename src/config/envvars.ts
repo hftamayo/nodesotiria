@@ -31,6 +31,10 @@ const databaseUrl = process.env.DATABASE_URL;
 const dataseeddev = process.env.SEED_DEVELOPMENT;
 const dataseedprod = process.env.SEED_PRODUCTION;
 
+const adminpword = process.env.ADMIN_PWORD;
+const supervisorpword = process.env.SUPERVISOR_PWORD;
+const userpword = process.env.USER1_PWORD;
+
 export {
   port,
   masterKey,
@@ -43,4 +47,26 @@ export {
   dataseeddev,
   dataseedprod,
   databaseUrl,
+  adminpword,
+  supervisorpword,
+  userpword,
+};
+
+export const PERMISSIONS = {
+  NONE: 0,
+  READ: 1,
+  WRITE: 2,
+  UPDATE: 4,
+  DELETE: 8,
+  ALL: 15,
+};
+
+export const SYSTEM_PERMISSIONS = {
+  LOGOUT: 1,
+};
+
+export const DOMAINS = {
+  USER: 'user',
+  ROLE: 'role',
+  SYSTEM: 'system',
 };
