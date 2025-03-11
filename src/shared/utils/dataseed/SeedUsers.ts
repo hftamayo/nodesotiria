@@ -37,16 +37,16 @@ class SeedUsers {
   private readonly dbDisconnectCommand = new DbDisconnectCommand();
 
   @LogExecution()
-  async seedRoles(): Promise<void> {
+  async seedUsers(): Promise<void> {
     try {
-      const isTablePresent = await this.isTableExistsCommand.execute('Role');
+      const isTablePresent = await this.isTableExistsCommand.execute('User');
       if (!isTablePresent) {
         console.log('Table "User" does not exist, skipping seeding');
         return;
       }
-      await this.resetIdSequencesCommand.execute('Role_id_seq');
+      await this.resetIdSequencesCommand.execute('User_id_seq');
       for (const user of users) {
-        await prisma.role.upsert({
+        await prisma.user.upsert({
           where: { name: user.email },
           update: {},
           create: user,
