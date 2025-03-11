@@ -3,13 +3,18 @@ import { IsTableExistsCommand } from '../../../services/commands/dataseeding/isT
 import { ResetIdSequencesCommand } from '../../../services/commands/dataseeding/resetIdSequencesCommand';
 import { DbDisconnectCommand } from '../../../services/commands/dataseeding/dbDisconnectCommand';
 import { LogExecution } from '../../../decorators/logging';
+import {
+  adminpword,
+  supervisorpword,
+  userpword,
+} from '../../../config/envvars';
 
 const users = [
   {
     lastname: 'Doe',
     firstname: 'John',
     email: 'jdoe@astros.com',
-    password: 'password',
+    password: adminpword,
     roleId: 1,
     status: true,
   },
@@ -17,7 +22,7 @@ const users = [
     lastname: 'Doe',
     firstname: 'Jane',
     email: 'jane@astros.com',
-    password: 'password',
+    password: supervisorpword,
     roleId: 2,
     status: true,
   },
@@ -25,7 +30,7 @@ const users = [
     lastname: 'Doe',
     firstname: 'Jack',
     email: 'jack@astros.com',
-    password: 'password',
+    password: userpword,
     roleId: 3,
     status: true,
   },
