@@ -3,22 +3,42 @@ import { IsTableExistsCommand } from '../../../services/commands/dataseeding/isT
 import { ResetIdSequencesCommand } from '../../../services/commands/dataseeding/resetIdSequencesCommand';
 import { DbDisconnectCommand } from '../../../services/commands/dataseeding/dbDisconnectCommand';
 import { LogExecution } from '../../../decorators/logging';
+import {
+  DOMAINS,
+  PERMISSIONS,
+  SYSTEM_PERMISSIONS,
+} from '../../../config/envvars';
 
 const roles = [
   {
     name: 'ADMINISTRATOR',
     description: 'Admin users have full access to all resources',
     status: true,
+    permissions: {
+      [DOMAINS.USER]: PERMISSIONS.ALL,
+      [DOMAINS.ROLE]: PERMISSIONS.ALL,
+      [DOMAINS.SYSTEM]: SYSTEM_PERMISSIONS.LOGOUT,
+    },
   },
   {
     name: 'SUPERVISOR',
     description: 'Supervisor users have access to most resources',
     status: true,
+    permissions: {
+      [DOMAINS.USER]: PERMISSIONS.READ | PERMISSIONS.UPDATE, // 5 (0101)
+      [DOMAINS.ROLE]: PERMISSIONS.READ, // 1 (0001)
+      [DOMAINS.SYSTEM]: SYSTEM_PERMISSIONS.LOGOUT, // 1 (0001)
+    },
   },
   {
     name: 'USER',
     description: 'User users have limited access to resources',
     status: true,
+    permissions: {
+      [DOMAINS.USER]: PERMISSIONS.READ, // 1 (0001) - Can only read their own info
+      [DOMAINS.ROLE]: PERMISSIONS.NONE, // 0 (0000) - No role access
+      [DOMAINS.SYSTEM]: SYSTEM_PERMISSIONS.LOGOUT, // 1 (0001)
+    },
   },
 ];
 
