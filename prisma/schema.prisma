@@ -35,7 +35,7 @@ model Users {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt  
   role          Roles      @relation(fields: [roleId], references: [id], name: "RoleToUsers")
-  Tasks         Tasks[]   @relation("UsersToTasks")
+  tasks         Tasks[]   @relation("UserToTasks")
   @@index([roleId])
 }
 
@@ -47,6 +47,6 @@ model Tasks {
   owner         Int
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt  
-  user          Users     @relation(fields: [owner], references: [id], name: "UserToTasks")
+  user          Users     @relation("UserToTasks", fields: [owner], references: [id])
   @@index([owner])
 }
