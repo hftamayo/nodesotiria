@@ -4,9 +4,9 @@
   "description": "Boilerplate for NodeJS backend projects",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch ./src/backend.ts",
+    "dev": "tsx watch ./src/server.ts",
     "build": "tsc",
-    "start": "node ./dist/backend.js",
+    "start": "node ./dist/server.js",
     "test": "jest",
     "lint": "npm-run-all --parallel lint:eslint lint:prettier",
     "lint:eslint": "eslint . --ext .js,.ts",
