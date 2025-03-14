@@ -27,14 +27,14 @@ model Roles {
 model Users {
   id            Int       @id @default(autoincrement())
   fullname      String
-  birth_date    Date
+  birth_date    DateTime
   email         String    @unique
   password      String
   status        Boolean
   roleId        Int
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt  
-  role          Role      @relation(fields: [roleId], references: [id], name: "RoleToUsers")
+  role          Roles      @relation(fields: [roleId], references: [id], name: "RoleToUsers")
   Tasks         Tasks[]   @relation("UsersToTasks")
   @@index([roleId])
 }
