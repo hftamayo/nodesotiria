@@ -1,11 +1,15 @@
 import prisma from '../api/v1/prismaClient';
-import { backend, whitelist_frontend } from './envvars';
+import { whitelist_frontend } from './envvars';
 
 const dbConnection = async () => {
   try {
-    if (!backend) throw new Error('Backend URL not found');
-
     await prisma.$connect();
+    const dbStatus = await prisma.$queryRaw<
+      { result: number }[]
+    >`SELECT 1+1 as result`;
+    if (dbStatus[0].result !== 2) {
+      throw new Error('Database connection error');
+    }
     console.log('Database connection successful');
   } catch (error) {
     console.log('Database connection error: ' + (error as Error).message);
