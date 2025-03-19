@@ -24,8 +24,9 @@ const whitelist_frontend = (process.env.FRONTEND_ORIGINS ?? '').split(',');
 const cors_secure = mode === 'production';
 const cors_samesite = mode === 'production' ? 'none' : 'lax';
 
-const backend =
+/*const backend =
   mode === 'production' ? process.env.DB_URI_PROD : process.env.DB_URI_DEV;
+*/
 
 const databaseUrl = process.env.DATABASE_URL;
 const dataseeddev = process.env.SEED_DEVELOPMENT;
@@ -40,7 +41,7 @@ export {
   masterKey,
   refreshKey,
   mode,
-  backend,
+  //  backend,
   whitelist_frontend,
   cors_secure,
   cors_samesite,
