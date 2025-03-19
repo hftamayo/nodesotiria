@@ -1,5 +1,5 @@
 import prisma from '../api/v1/prismaClient';
-import { backend, whitelist_frontend, mode } from './envvars';
+import { backend, whitelist_frontend } from './envvars';
 
 const dbConnection = async () => {
   try {
@@ -7,14 +7,6 @@ const dbConnection = async () => {
 
     await prisma.$connect();
     console.log('Database connection successful');
-    const db = prisma.connection.$connect();
-    db.on(
-      'error',
-      console.error.bind(console, 'connection error with data layer:'),
-    );
-    db.once('open', function () {
-      console.log(`Connected to the Remote Dataset in ${mode} environment`);
-    });
   } catch (error) {
     console.log('Database connection error: ' + (error as Error).message);
     process.exit(1);
