@@ -1,23 +1,35 @@
-import { mode, dataseeddev, dataseedprod } from '../../../config/envvars';
+import { EnvironmentConfig } from '../../../config/environment';
 import { SeedRolesCommand } from '../../../services/commands/dataseeding/seedRolesCommand';
 import { SeedUsersCommand } from '../../../services/commands/dataseeding/seedUsersCommand';
 import { LogExecution } from '../../../decorators/logging';
 
 class SeedDatabase {
-  private readonly seedUsersCommand = new SeedUsersCommand();
-  private readonly seedRolesCommand = new SeedRolesCommand();
+  private readonly envConfig: EnvironmentConfig;
+  private readonly seedUsersCommand: SeedUsersCommand;
+  private readonly seedRolesCommand: SeedRolesCommand;
+
+  constructor() {
+    this.envConfig = EnvironmentConfig.getInstance();
+    this.seedUsersCommand = new SeedUsersCommand();
+    this.seedRolesCommand = new SeedRolesCommand();
+  }
 
   @LogExecution()
   async seed(): Promise<void> {
-    const seedingRequired = dataseeddev === 'true' || dataseedprod === 'true';
+    const { development, production } = this.envConfig.getSeeding();
+    const seedingRequired = development || production;
 
     try {
       if (seedingRequired) {
-        console.log(`Seeding database in ${mode} environment`);
+        console.log(
+          `Seeding database in ${this.envConfig.getMode} environment`,
+        );
         await this.seedRolesCommand.execute();
         await this.seedUsersCommand.execute();
       } else {
-        console.log(`No seeding required in ${mode} environment`);
+        console.log(
+          `No seeding required in ${this.envConfig.getMode} environment`,
+        );
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
