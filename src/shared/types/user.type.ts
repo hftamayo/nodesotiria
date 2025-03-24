@@ -1,11 +1,11 @@
 export type FullUserType = {
   id: string;
-  lastname: string;
-  firstname: string;
+  fullname: string;
+  birth_date: Date;
   email: string;
   password: string;
-  roleId: number;
   status: boolean;
+  roleId: number;
   createdAt: Date;
   updatedAt: Date;
 };
