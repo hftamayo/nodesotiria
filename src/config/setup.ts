@@ -1,5 +1,7 @@
 import prisma from '../api/v1/prismaClient';
-import { whitelist_frontend } from './envvars';
+import { EnvironmentConfig } from './environment';
+
+const envConfig = EnvironmentConfig.getInstance();
 
 const dbConnection = async () => {
   try {
@@ -23,7 +25,8 @@ const setCorsEnviro = {
     callback: (error: Error | null, allow?: boolean) => void,
   ) => {
     console.log(`CORS requested from origin: ${origin}`);
-    if (whitelist_frontend.indexOf(origin || '') !== -1 || !origin) {
+    const { whitelist } = envConfig.getCorsConfig();
+    if (whitelist.indexOf(origin || '') !== -1 || !origin) {
       console.log(`CORS requested from origin: ${origin} granted`);
       callback(null, true);
     } else {
