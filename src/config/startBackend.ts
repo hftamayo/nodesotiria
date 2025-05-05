@@ -2,16 +2,15 @@ import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { dbConnection, setCorsEnviro } from './setup';
-import { port } from './envvars';
-
+import { EnvironmentConfig } from './environment';
 import SeedDatabase from '../shared/utils/dataseed/SeedDatabase';
 import roleRouter from '../api/v1/routes/roleRoutes';
 import userRouter from '../api/v1/routes/userRoutes';
 import hcRouter from '../api/v1/routes/hcRoutes';
 
 const app = express();
-
-const PORT = port || 5001;
+const envConfig = EnvironmentConfig.getInstance();
+const PORT = envConfig.getPort();
 
 async function startBE() {
   try {
@@ -47,7 +46,7 @@ async function startBE() {
     });
 
     //console.log(`the backend is ready in ${mode} environment`);
-    const server = app.listen(port, () => {
+    const server = app.listen(PORT, () => {
       console.log(`The server instance is running on port ${PORT}`);
     });
     return server;
