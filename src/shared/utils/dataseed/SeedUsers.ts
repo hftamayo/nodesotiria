@@ -55,10 +55,10 @@ class SeedUsers {
     try {
       const isTablePresent = await this.isTableExistsCommand.execute('Users');
       if (!isTablePresent) {
-        console.log('Table "User" does not exist, skipping seeding');
+        console.log('Table "Users" does not exist, skipping seeding');
         return;
       }
-      await this.resetIdSequencesCommand.execute('User_id_seq');
+      await this.resetIdSequencesCommand.execute('Users_id_seq');
 
       const users = this.getDefaultUsers();
       for (const user of users) {

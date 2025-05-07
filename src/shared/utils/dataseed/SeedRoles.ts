@@ -67,7 +67,7 @@ class SeedRoles {
         console.log('Table "Roles" does not exist, skipping seeding');
         return;
       }
-      await this.resetIdSequencesCommand.execute('Role_id_seq');
+      await this.resetIdSequencesCommand.execute('Roles_id_seq');
       const roles = this.getDefaultRoles();
       for (const role of roles) {
         await prisma.roles.upsert({
