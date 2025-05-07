@@ -1,10 +1,10 @@
-import { startBackend } from '../../shared/config/enviro';
+import { startBE } from './config/startBackend';
 
-startBackend()
+startBE()
   .then(() => {
-    console.log('PG Datalayer Service started');
+    console.log('Sotiria backend is up and running');
   })
   .catch((error: unknown) => {
-    console.error('PG Datalayer Service failed to start', error);
+    console.error('Error starting sotiria backend: ', error);
     process.exit(1);
   });
