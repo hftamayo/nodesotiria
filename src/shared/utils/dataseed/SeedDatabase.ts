@@ -22,13 +22,13 @@ class SeedDatabase {
     try {
       if (seedingRequired) {
         console.log(
-          `Seeding database in ${this.envConfig.getMode} environment`,
+          `Seeding database in ${this.envConfig.getMode()} environment`,
         );
         await this.seedRolesCommand.execute();
         await this.seedUsersCommand.execute();
       } else {
         console.log(
-          `No seeding required in ${this.envConfig.getMode} environment`,
+          `No seeding required in ${this.envConfig.getMode()} environment`,
         );
       }
     } catch (error: unknown) {
