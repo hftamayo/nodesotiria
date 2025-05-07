@@ -53,7 +53,7 @@ class SeedUsers {
   @LogExecution()
   async seedUsers(): Promise<void> {
     try {
-      const isTablePresent = await this.isTableExistsCommand.execute('User');
+      const isTablePresent = await this.isTableExistsCommand.execute('Users');
       if (!isTablePresent) {
         console.log('Table "User" does not exist, skipping seeding');
         return;

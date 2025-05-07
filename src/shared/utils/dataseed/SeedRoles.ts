@@ -62,9 +62,9 @@ class SeedRoles {
   @LogExecution()
   async seedRoles(): Promise<void> {
     try {
-      const isTablePresent = await this.isTableExistsCommand.execute('Role');
+      const isTablePresent = await this.isTableExistsCommand.execute('Roles');
       if (!isTablePresent) {
-        console.log('Table "Role" does not exist, skipping seeding');
+        console.log('Table "Roles" does not exist, skipping seeding');
         return;
       }
       await this.resetIdSequencesCommand.execute('Role_id_seq');
