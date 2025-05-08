@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import { GetAppHealthQuery } from '../../../services/queries/healthCheck/getAppHealthQuery';
-import { GetDbHealthQuery } from '../../../services/queries/healthCheck/GetDBHealthQuery';
+import { GetDbHealthQuery } from '../../../services/queries/healthCheck/getDBHealthQuery';
 import { LogExecution } from '../../../decorators/logging';
 
 export class HealthCheckController {
-  private appHealthQuery: GetAppHealthQuery;
-  private dbHealthQuery: GetDbHealthQuery;
+  private readonly appHealthQuery: GetAppHealthQuery;
+  private readonly dbHealthQuery: GetDbHealthQuery;
 
   constructor() {
     this.appHealthQuery = new GetAppHealthQuery();
