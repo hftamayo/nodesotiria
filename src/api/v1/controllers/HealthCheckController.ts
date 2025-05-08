@@ -21,7 +21,7 @@ export class HealthCheckController {
   @LogExecution()
   async dbHealthCheck(req: Request, res: Response): Promise<void> {
     const result = await this.dbHealthQuery.execute();
-    const statusCode = result.error ? 500 : 200;
+    const statusCode = result.status === 'healthy' ? 200 : 500;
     res.status(statusCode).json(result);
   }
 }
