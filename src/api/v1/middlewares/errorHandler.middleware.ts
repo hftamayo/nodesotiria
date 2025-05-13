@@ -8,12 +8,12 @@ import {
 
 export class ValidationMiddleware {
   @LogExecution()
-  static validate(req: Request, res: Response, next: NextFunction) {
+  static validate(req: Request, res: Response, next: NextFunction): void {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      // Log validation errors
       logValidationError(req.path, req.method, errors.array());
-      return res.status(400).json(createValidationError(errors.array()));
+      res.status(400).json(createValidationError(errors.array()));
+      return;
     }
     next();
   }
